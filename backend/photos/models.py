@@ -19,5 +19,9 @@ class Photo(models.Model):
     city = models.CharField(max_length=255, blank=True)
     country = models.CharField(max_length=255, blank=True)
 
+    search_text = models.TextField(blank=True)
+    embedding = models.JSONField(null=True, blank=True)
+
+
     def __str__(self):
         return self.file_name
