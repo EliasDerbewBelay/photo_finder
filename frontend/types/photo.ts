@@ -5,4 +5,6 @@ export interface Photo {
   thumbnail_url: string;
   date_taken: string;
   file_name: string;
+  created_at:string;
+  description: string;
 }
