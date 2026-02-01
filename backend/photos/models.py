@@ -16,5 +16,8 @@ class Photo(models.Model):
     gps_latitude = models.FloatField(null=True, blank=True)
     gps_longitude = models.FloatField(null=True, blank=True)
 
+    city = models.CharField(max_length=255, blank=True)
+    country = models.CharField(max_length=255, blank=True)
+
     def __str__(self):
         return self.file_name

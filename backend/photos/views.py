@@ -5,15 +5,40 @@ from .models import Photo
 
 def list_photos(request):
     query = request.GET.get("q", "")
+    year = request.GET.get("year")
+    month = request.GET.get("month")
+    camera = request.GET.get("camera")
+    city = request.GET.get("city")
+    country = request.GET.get("country")
 
-    photos = (
-        Photo.objects.filter(
+    photos = Photo.objects.all()
+
+    # keyword search
+
+    if query:
+        photos = photos.filter(
             Q(file_name__icontains=query) |
             Q(camera_model__icontains=query) |
             Q(folder__icontains=query)
         )
-        .order_by("-taken_at", "-created_at")[:200]
-    )
+        
+    if year:
+        photos = photos.filter(taken_at__year=year)
+
+    if month:
+        photos = photos.filter(taken_at__month=month)
+
+    if camera:
+        photos = photos.filter(camera_model=camera)
+
+    if city:
+        photos = photos.filter(city__icontains=city)
+
+    if country:
+        photos = photos.filter(country__icontains=country)
+
+    photos = photos.order_by("-taken_at", "-created_at")[:200]
+
 
     data = [
         {
