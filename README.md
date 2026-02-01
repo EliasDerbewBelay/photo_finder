@@ -1,10 +1,3 @@
-Absolutely — here’s a **clear, professional README.md** that someone can follow to **run your project locally on their own device**.
-It’s written like a real open-source project README, not a tutorial dump.
-
-You can copy-paste this directly into a `README.md` file.
-
----
-
 # 📸 AI-Powered Photo Finder (Django + Next.js)
 
 An AI-powered web application that lets you **search thousands of local photos instantly** using **natural language**, metadata, and semantic similarity — similar to Google Photos, but **fully local and private**.
