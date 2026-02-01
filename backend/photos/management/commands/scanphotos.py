@@ -7,3 +7,4 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         scan_photos()
         self.stdout.write(self.style.SUCCESS('Successfully scanned and indexed photos.'))
+        

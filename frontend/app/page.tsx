@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Photo } from "@/types/photos";
+import { API_BASE_URL } from "@/lib/api";
 
 export default function Home() {
   const [photos, setPhotos] = useState<Photo[]>([]);
@@ -10,7 +11,7 @@ export default function Home() {
   useEffect(() => {
     const fetchPhotos = async () => {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/photos/?q=${search}`,
+        `${API_BASE_URL}/api/photos/?q=${search}`,
       );
       const data = await response.json();
       setPhotos(data);
@@ -35,7 +36,7 @@ export default function Home() {
               className="overflow-hidden rounded-lg shadow-md hover:scale-105 transition-transform"
             >
               <img
-                src={`http://127.0.0.1:8000/api/photo/${photo.id}/`}
+                src={`${API_BASE_URL}/api/photo/${photo.id}/`}
                 width={400}
                 height={300}
                 alt={photo.file_name}

@@ -7,7 +7,14 @@ class Photo(models.Model):
     file_name = models.CharField(max_length=255)
     folder = models.TextField()
     size = models.BigIntegerField()
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
-    def _str_(self):
+    #  ---New EXIF fields---
+    taken_at = models.DateTimeField(null=True, blank=True)
+    camera_model = models.CharField(max_length=255, blank=True)
+
+    gps_latitude = models.FloatField(null=True, blank=True)
+    gps_longitude = models.FloatField(null=True, blank=True)
+
+    def __str__(self):
         return self.file_name

@@ -1,33 +1,32 @@
 import os
-from datetime import datetime
 from django.conf import settings
 from .models import Photo
+from .exif_utils import extract_exif_data
 
-IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".webp")
+IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png")
 
 def scan_photos():
     root = settings.PHOTO_ROOT
+    count = 0
 
-    if not os.path.exists(root):
-        raise ValueError(f"PHOTO_ROOT does not exist: {root}")
+    for root_dir, _, files in os.walk(root):
+        for file in files:
+            if file.lower().endswith(IMAGE_EXTENSIONS):
+                full_path = os.path.join(root_dir, file)
 
-    for dirpath, dirnames, filenames in os.walk(root):
-        for filename in filenames:
-            if not filename.lower().endswith(IMAGE_EXTENSIONS):
-                continue
+                exif = extract_exif_data(full_path)
 
-            full_path = os.path.join(dirpath, filename)
+                photo, created = Photo.objects.update_or_create(
+                    file_path=full_path,
+                    defaults={
+                        "file_name": file,
+                        "folder":root_dir,
+                        "taken_at": exif["taken_at"],
+                        "camera_model": exif["camera_model"],
+                        "gps_latitude": exif["gps_latitude"],
+                        "gps_longitude": exif["gps_longitude"],
+                    },
+                )
+                count += 1
 
-            # Avoid duplicates
-            if Photo.objects.filter(file_path=full_path).exists():
-                continue
-
-            stat = os.stat(full_path)
-
-            Photo.objects.create(
-                file_path=full_path,
-                file_name=filename,
-                folder=dirpath,
-                size=stat.st_size,
-                created_at=datetime.fromtimestamp(stat.st_ctime),
-            )
+    print(f"Indexed {count} photos")
