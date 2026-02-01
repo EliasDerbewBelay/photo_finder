@@ -20,6 +20,6 @@ from photos import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('photos/', views.list_photos, name='list_photos'),
-    path('photos/<int:pk>/', views.serve_photo, name='serve_photo'),
+    path('api/photos/', views.list_photos, name='list_photos'),
+    path('api/photo/<int:pk>/', views.serve_photo, name='serve_photo'),
 ]
